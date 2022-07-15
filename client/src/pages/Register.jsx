@@ -155,6 +155,7 @@ const Register = () => {
             name="username"
             required
             onChange={(e) => handleChange(e)}
+            autoFocus
           />
           <input type="email" placeholder="Email" name="email" required onChange={(e) => handleChange(e)} />
           <div className="input-password">

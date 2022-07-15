@@ -158,6 +158,7 @@ const Login = () => {
             name="username"
             required
             onChange={(e) => handleChange(e)}
+            autoFocus
           />
           <div className="input-password">
             <input
