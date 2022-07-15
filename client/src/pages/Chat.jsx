@@ -7,6 +7,8 @@ import ChatContainer from '../components/ChatContainer';
 import Welcome from '../components/Welcome';
 import { allUsersRoute, host } from '../utils/APIRoutes';
 import Contacts from './../components/Contacts';
+import loader from '../assets/loader.gif';
+
 
 const Container = styled.div`
   height: 100vh;
@@ -35,6 +37,7 @@ const Chat = () => {
   const [currentUser, setCurrentUser] = useState(undefined);
   const [currentChat, setCurrentChat] = useState(undefined);
   const [isLoaded, setIsLoaded] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -62,6 +65,7 @@ const Chat = () => {
         if (currentUser.isAvatarImageSet) {
           const data = await axios.get(`${allUsersRoute}/${currentUser._id}`);
           setContacts(data.data);
+          setIsLoading(false);
         } else {
           navigate('/setAvatar');
         }
@@ -74,16 +78,22 @@ const Chat = () => {
   };
   return (
     <>
-      <Container>
-        <div className="container">
-          <Contacts contacts={contacts} currentUser={currentUser} changeChat={handleChatChange} />
-          {isLoaded && currentChat === undefined ? (
-            <Welcome currentUser={currentUser} />
-          ) : (
-            <ChatContainer currentChat={currentChat} currentUser={currentUser} socket={socket} />
-          )}
-        </div>
-      </Container>
+      {isLoading ? (
+        <Container>
+          <img src={loader} alt="" />
+        </Container>
+      ) : (
+        <Container>
+          <div className="container">
+            <Contacts contacts={contacts} currentUser={currentUser} changeChat={handleChatChange} />
+            {isLoaded && currentChat === undefined ? (
+              <Welcome currentUser={currentUser} />
+            ) : (
+              <ChatContainer currentChat={currentChat} currentUser={currentUser} socket={socket} />
+            )}
+          </div>
+        </Container>
+      )}
     </>
   );
 };
